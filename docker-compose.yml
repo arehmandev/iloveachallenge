@@ -1,0 +1,35 @@
+nginx: 
+  image: nginx
+  volumes:
+   - ./default.conf:/etc/nginx/conf.d/default.conf
+  ports:
+   - "80:80"
+  command: /bin/bash -c "nginx -g 'daemon off;'"
+  links:
+   - traefik
+
+traefik:
+  image: traefik
+  command: -c /dev/null --web --docker --docker.domain=sainsburys --logLevel=DEBUG
+  expose:
+    - "80"
+  ports:
+    - "8080:8080"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  environment:
+    - VIRTUAL_HOST=whoami.local
+
+app1:
+  image: sainsburys
+  labels:
+    - "traefik.backend=whoami"
+    - "traefik.frontend.rule=Host:app.sainsburys"
+  hostname: app1
+
+app2:
+  image: sainsburys
+  labels:
+    - "traefik.backend=whoami"
+    - "traefik.frontend.rule=Host:app.sainsburys"
+  hostname: app2
