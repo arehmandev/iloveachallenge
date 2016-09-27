@@ -12,7 +12,7 @@ To deploy:
 
 To destroy:
 
-docker-compose down
+docker-compose kill
 
 Notes:
 
