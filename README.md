@@ -8,7 +8,7 @@ To deploy:
 
 3. Run start.sh
 
-4. Add app.sainsburys as a localhost entry in /etc/hosts then browse there
+4. Add web.abs as a localhost entry in /etc/hosts then browse to http://web.abs or 'curl web.abs'
 
 To destroy:
 
