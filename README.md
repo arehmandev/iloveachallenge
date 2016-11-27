@@ -18,5 +18,5 @@ Notes:
 
 This is setup as follows:
 
-Nginx (webserver)   ->   Traeffik (Loadbalancer)  --> app1 and app2 via Roundrobin
+Traeffik (Loadbalancer) -> 2x Nginx (web1 and web 2 servers)   --> app1 and app2 via Roundrobin
                                               
