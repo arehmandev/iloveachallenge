@@ -1,10 +1,13 @@
 # Traeffik loadbalancing 2 Nginx webservers, connected to 2 Go application containers
 
+##Prerequisites:
+- docker
+- docker-compose
+
 ##To deploy:
 ```
 1. Clone this repo
-2. If you don't have docker locally, uncomment line 2 of start.sh
-3. Run start.sh
+2. Run docker-compose build && docker-compose up -d
 4. Add web.abs as a localhost entry in /etc/hosts then browse to http://web.abs or 'curl web.abs'
 ```
 To destroy:

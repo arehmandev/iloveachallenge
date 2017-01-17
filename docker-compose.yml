@@ -1,51 +1,57 @@
-traefik:
-  image: traefik
-  command: -c /dev/null --web --docker --docker.domain=abs --logLevel=DEBUG
-  ports:
-    - "8080:8080"
-    - "80:80"
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+version: '2'
+services:
+    traefik:
+      image: traefik
+      command: -c /dev/null --web --docker --docker.domain=abs --logLevel=DEBUG
+      ports:
+        - "8080:8080"
+        - "80:80"
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
 
-web1: 
-  image: nginx
-  volumes:
-   - ./web1.conf:/etc/nginx/conf.d/default.conf
-  expose:
-   - "443"
-  ports:
-   - "501:443"
-  command: /bin/bash -c "nginx -g 'daemon off;'"
-  links:
-   - app1
-  labels:
-   - "traefik.backend=whoami"
-   - "traefik.frontend.rule=Host:web.abs"
-  hostname: web1
+    web1:
+      image: nginx
+      volumes:
+       - ./web1.conf:/etc/nginx/conf.d/default.conf
+      expose:
+       - "443"
+      ports:
+       - "501:443"
+      command: /bin/bash -c "nginx -g 'daemon off;'"
+      links:
+       - app1
+      labels:
+       - "traefik.backend=whoami"
+       - "traefik.frontend.rule=Host:web.abs"
+      hostname: web1
 
-web2: 
-  image: nginx
-  volumes:
-   - ./web2.conf:/etc/nginx/conf.d/default.conf
-  expose:
-   - "443"
-  ports:
-   - "502:443"
-  command: /bin/bash -c "nginx -g 'daemon off;'"
-  links:
-   - app2
-  labels:
-   - "traefik.backend=whoami"
-   - "traefik.frontend.rule=Host:web.abs"
-  hostname: web2
+    web2:
+      image: nginx
+      volumes:
+       - ./web2.conf:/etc/nginx/conf.d/default.conf
+      expose:
+       - "443"
+      ports:
+       - "502:443"
+      command: /bin/bash -c "nginx -g 'daemon off;'"
+      links:
+       - app2
+      labels:
+       - "traefik.backend=whoami"
+       - "traefik.frontend.rule=Host:web.abs"
+      hostname: web2
 
-app1:
-  image: sainsburys
-  hostname: app1
-  expose: 
-   - "8484"
-app2:
-  image: sainsburys
-  hostname: app2
-  expose: 
-   - "8484"
+    app1:
+      image: sainsburys
+      hostname: app1
+      build:
+        context: "."
+      expose:
+       - "8484"
+    app2:
+      image: sainsburys
+      hostname: app2
+      build:
+        context: "."
+      expose:
+       - "8484"
